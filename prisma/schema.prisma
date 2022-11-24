@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator jsonSchema {
+  provider = "prisma-json-schema-generator"
+  output   = "../json-schema"
+  keepRelationScalarFields = true
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  taskList  TaskList @relation(fields: [taskListId], references: [id])
+  taskListId Int
+}
+
+model TaskList {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+  tasks     Task[]
+  permissions Permission[]
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   Int
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  taskLists TaskList[]
+  permissions Permission[]
+}
+
+model Permission {
+  id        Int      @id @default(autoincrement())
+  taskList  TaskList @relation(fields: [taskListId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  taskListId Int
+  userId Int
+}

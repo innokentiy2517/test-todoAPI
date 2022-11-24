@@ -1,0 +1,128 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Task": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "completed": {
+          "type": "boolean",
+          "default": false
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "taskList": {
+          "$ref": "#/definitions/TaskList"
+        },
+        "taskListId": {
+          "type": "integer"
+        }
+      }
+    },
+    "TaskList": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Task"
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Permission"
+          }
+        },
+        "owner": {
+          "$ref": "#/definitions/User"
+        },
+        "ownerId": {
+          "type": "integer"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "taskLists": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskList"
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Permission"
+          }
+        }
+      }
+    },
+    "Permission": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "taskList": {
+          "$ref": "#/definitions/TaskList"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "taskListId": {
+          "type": "integer"
+        },
+        "userId": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "task": {
+      "$ref": "#/definitions/Task"
+    },
+    "taskList": {
+      "$ref": "#/definitions/TaskList"
+    },
+    "user": {
+      "$ref": "#/definitions/User"
+    },
+    "permission": {
+      "$ref": "#/definitions/Permission"
+    }
+  }
+}
